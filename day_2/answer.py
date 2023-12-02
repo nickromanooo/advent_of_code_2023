@@ -34,9 +34,6 @@ def part_two(file):
             count,color = round.strip(';, ').split()
             maxes[color] = max(int(count),maxes[color])
         games[game_id] = maxes
-    #which games would have been possible if the bag contained only:
-    #12 red cubes, 13 green cubes, and 14 blue cubes?
-    #sum of ids of those games
     game_powers = [math.prod(res.values()) for key,res in games.items()]
     print(game_powers)
     return sum(game_powers)
