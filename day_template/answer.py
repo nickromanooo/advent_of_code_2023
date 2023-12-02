@@ -7,9 +7,9 @@ def part_one(file):
 
 def part_two(file):
     f = open(file,'r')
-    return 
+    return
 
-print(f"Part one: {part_one('input.txt')}")
 print(f"Part one test: {part_one('test_input.txt')}")
+print(f"Part one: {part_one('input.txt')}")
+print(f"Part two test: {part_two('test_input.txt')}")
 print(f"Part two: {part_two('input.txt')}")
-print(f"Part two test: {part_two('text_input.txt')}")
