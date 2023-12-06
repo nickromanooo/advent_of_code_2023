@@ -119,9 +119,14 @@ def part_two_take_two(file):
         for map_line in map_lines:
             #source_start,destination_start,length
             # TODO parse this into range/mod pairs
-            sub_map_ranges.append([int(x) for x in map_line.split(' ')])
+            # sub_map_ranges.append([int(x) for x in map_line.split(' ')])
+
+            destination_start,source_start,length = [int(x) for x in map_line.split(' ')]
+            map_range = (source_start,source_start + length - 1)
+            modifier = destination_start - source_start
+            sub_map_ranges.append([map_range,modifier])
         # TODO why does removing this line break? bounds issue? is there overlap in input
-        sub_map_ranges = sorted(sub_map_ranges,key=lambda x: x[1])
+            sub_map_ranges = sorted(sub_map_ranges,key=lambda x: x[0][0])
         map_ranges.append(sub_map_ranges)
 
     prev_ranges = seed_ranges
@@ -129,9 +134,8 @@ def part_two_take_two(file):
         # TODO make these variable names not hurt my brain
         cur_items = map_ranges.pop(0)
         old_ranges = prev_ranges
-        cur_ranges = [(r[1],r[1]+r[2]-1) for r in cur_items]
-        cur_modifiers = [r[0]-r[1] for r in cur_items]
-
+        cur_ranges = [r[0] for r in cur_items]
+        cur_modifiers = [r[1] for r in cur_items]
         new_ranges = []
         for i in range(len(old_ranges)):
             old_range = old_ranges[i]
