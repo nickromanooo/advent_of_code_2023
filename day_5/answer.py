@@ -79,7 +79,7 @@ def part_two(file):
     min_result = None
     loc = -1
     while not min_result :
-        loc += 10
+        loc += 1
         seed = loc
         # print(f"checking location #{seed}")
         for map_range in map_ranges:
@@ -110,7 +110,7 @@ def part_two_take_two(file):
             seed_ranges.append([range_start,range_start+range_len-1])
             range_start,range_len = None,None
 
-    print(seed_ranges)
+    # print(seed_ranges)
     map_ranges = []
     for map in maps:
         map_lines = [line.strip() for line in map.split('\n')]
@@ -120,13 +120,11 @@ def part_two_take_two(file):
             #source_start,destination_start,length
             # TODO parse this into range/mod pairs
             # sub_map_ranges.append([int(x) for x in map_line.split(' ')])
-
             destination_start,source_start,length = [int(x) for x in map_line.split(' ')]
             map_range = (source_start,source_start + length - 1)
             modifier = destination_start - source_start
             sub_map_ranges.append([map_range,modifier])
-        # TODO why does removing this line break? bounds issue? is there overlap in input
-            sub_map_ranges = sorted(sub_map_ranges,key=lambda x: x[0][0])
+
         map_ranges.append(sub_map_ranges)
 
     prev_ranges = seed_ranges
@@ -140,8 +138,8 @@ def part_two_take_two(file):
         for i in range(len(old_ranges)):
             old_range = old_ranges[i]
             new_sub_ranges = []
-            print(f"================")
-            print(f"\tchecking: {old_range}")
+            # print(f"================")
+            # print(f"\tchecking: {old_range}")
             for j in range(len(cur_ranges)):
                 cur_range = cur_ranges[j]
                 cur_mod = cur_modifiers[j]
@@ -152,7 +150,7 @@ def part_two_take_two(file):
                 # old range overlaps to the left
                 # old range overlaps to the right
                 # TODO can definitely simplify these checks
-                print(f"\t  vs {cur_range} modifier = {cur_mod}")
+                # print(f"\t  vs {cur_range} modifier = {cur_mod}")
                 if old_range[0] > cur_range[1] or old_range[1] < cur_range[0]:
                     # print('\toutside')
                     # dont do anything
@@ -160,32 +158,33 @@ def part_two_take_two(file):
                 elif old_range[0] >= cur_range[0] and old_range[1] <= cur_range[1]:
                     range_to_add_no_mod =  (old_range[0],old_range[1])
                     range_to_add = (old_range[0]+cur_mod,old_range[1]+cur_mod)
-                    print(f'\t\tfully inside adding: {range_to_add_no_mod} => {range_to_add}')
+                    # print(f'\t\tfully inside adding: {range_to_add_no_mod} => {range_to_add}')
                     new_ranges.append(range_to_add)
                     old_range = None
                     # modify all inside and add to list for next iteration
                 else:
-                    # print(f"--------------OUTSIDES")
-                    if old_range[0] >= cur_range[0] and old_range[1] > cur_range[1]:
-                        print('\t\tstarts middle then outside right')
+                    # old_range[0] >= cur_range[0] and 
+                    # and old_range[1] <= cur_range[1]
+                    if old_range[1] > cur_range[1]:
+                        # print('\t\tstarts middle then outside right')
                         range_to_add = (old_range[0]+cur_mod,cur_range[1]+cur_mod)
                         range_to_add_no_mod = (old_range[0],cur_range[1])
-                        print(f'\t\tadding {range_to_add_no_mod} => {range_to_add}')
+                        # print(f'\t\tadding {range_to_add_no_mod} => {range_to_add}')
                         new_ranges.append(range_to_add)
                         old_range = (cur_range[1]+1,old_range[1])
-                        print(f'\t\told is now {old_range}')
-                    if old_range[0] < cur_range[0] and old_range[1] <= cur_range[1]:
-                        print('\tstarts outside left end middle')
+                        # print(f'\t\told is now {old_range}')
+                    if old_range[0] < cur_range[0]:
+                        # print('\tstarts outside left end middle')
                         range_to_add = (cur_range[0]+cur_mod,old_range[1]+cur_mod)
                         range_to_add_no_mod = (cur_range[0],old_range[1])
-                        print(f'\t\tadding {range_to_add_no_mod} => {range_to_add}')
+                        # print(f'\t\tadding {range_to_add_no_mod} => {range_to_add}')
                         new_ranges.append(range_to_add)
                         #HERE
                         old_range = (old_range[0],cur_range[0]-1)
-                        print(f'\t\told is now {old_range}')
+                        # print(f'\t\told is now {old_range}')
                     
             if old_range:
-                print(f'\t\t adding old range {old_range}')
+                # print(f'\t\t adding old range {old_range}')
                 new_ranges.append(old_range) 
         prev_ranges = new_ranges
 
@@ -196,9 +195,10 @@ def part_two_take_two(file):
 import os
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
-# print(f"Part one test: {part_one('test_input.txt')}")
-# print(f"Part one: {part_one('input.txt')}")
-# print(f"Part two test: {part_two('test_input.txt')}")
-# print(f"Part two: {part_two(dirname + '/input.txt')}")
-# print(f"Part two v2 test: {part_two_take_two(dirname + '/test_input.txt')}")
-print(f"Part two v2: {part_two_take_two(dirname + '/input.txt')}")
+print(f"Part one test: {part_one('test_input.txt')}")
+print(f"Part one: {part_one('input.txt')}")
+print(f"Part two test: {part_two('test_input.txt')}")
+print(f"Part two interval math solution test: {part_two_take_two(dirname + '/test_input.txt')}")
+print(f"Part two interval math solution: {part_two_take_two(dirname + '/input.txt')}")
+print("Starting v2 output inefficient solution, runs in ~1 minute. might want to cancel this :)")
+print(f"Part two: {part_two(dirname + '/input.txt')}")
