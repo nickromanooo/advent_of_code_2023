@@ -190,9 +190,9 @@ def part_two_take_two(file):
 import os
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
-print(f"Part one test: {part_one(dirname + 'test_input.txt')}")
-print(f"Part one: {part_one(dirname + 'input.txt')}")
-print(f"Part two test: {part_two(dirname + 'test_input.txt')}")
+print(f"Part one test: {part_one(dirname + '/test_input.txt')}")
+print(f"Part one: {part_one(dirname + '/input.txt')}")
+print(f"Part two test: {part_two(dirname + '/test_input.txt')}")
 print(f"Part two interval math solution test: {part_two_take_two(dirname + '/test_input.txt')}")
 print(f"Part two interval math solution: {part_two_take_two(dirname + '/input.txt')}")
 print("Starting v2 output inefficient solution, runs in ~1 minute. might want to cancel this :)")
