@@ -27,12 +27,25 @@ def part_two(file):
     race_time = int(race_time.replace(' ',''))
     best_distance = int(best_distance.replace(' ',''))
 
-    for i in range(0,int(race_time)):
-        d = i * (race_time-i)
+    # find where i where i is valid, but i-1 is not valid
+    def calc_distance(x,rt):
+        return x*(rt-x)
+    min_range = 0
+    max_range = int((race_time+1)/2) #race time of 7 is 8 times to check, +1 / 2 and converting to int will round down 
+    search_index = int((max_range-min_range)/2)
+    i = 0
+    while True: # could maybe have a better loop here
+        d = calc_distance(search_index,race_time)
         if d > best_distance:
-            return (race_time+1)-(2 * i)
-        
-    return None
+            # if we find the index where i-1 is not valid, we win
+            if calc_distance(search_index-1,race_time) < best_distance:
+                return (race_time+1)-(2 * search_index) 
+            max_range = search_index-1
+        else:
+            # didnt find a valid distance go up
+            min_range = search_index+1
+        search_index = int((max_range-min_range)/2) + min_range
+        i +=1
 
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
