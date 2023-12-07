@@ -138,8 +138,6 @@ def part_two(file):
         default_rank = hand_rank(in_hand)
         if 'J' not in in_hand:
             return default_rank
-        if len(set(in_hand)) == 1:
-            return hand_rank('AAAAA')
         hand_ranks = []
         for letter in set([let for let in in_hand if let != 'J']+ ['A']):
             temp_hand = in_hand.replace('J',letter)
