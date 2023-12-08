@@ -22,6 +22,12 @@ def part_one(file):
 
 
 def part_two(file):
+    """
+        Part two revolves around recognizing that the puzzle inputs form a loop
+        Each input reaches "solved" state every X iterations this can be tested
+        by finding the first N instances for each, and ensuring they are multiples
+        From there find the first occurance of each and then find the smallest shared multiple
+    """
     f = open(file,'r')
     instructions, values = [line.strip() for line in f.read().split('\n\n')]
      # 0 is left, 1 is right, as instructions are stored as pairs X => (L,R)

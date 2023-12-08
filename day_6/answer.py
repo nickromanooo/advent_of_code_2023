@@ -31,7 +31,7 @@ def part_two(file):
     def calc_distance(x,rt):
         return x*(rt-x)
     min_range = 0
-    max_range = int((race_time+1)/2) #race time of 7 is 8 times to check, +1 / 2 and converting to int will round down 
+    max_range = int((race_time)/2) #race time of 7 is 8 times to check, +1 / 2 and converting to int will round down 
     search_index = int((max_range-min_range)/2)
     i = 0
     while True: # could maybe have a better loop here
@@ -40,10 +40,10 @@ def part_two(file):
             # if we find the index where i-1 is not valid, we win
             if calc_distance(search_index-1,race_time) < best_distance:
                 return (race_time+1)-(2 * search_index) 
-            max_range = search_index-1
+            max_range = search_index
         else:
             # didnt find a valid distance go up
-            min_range = search_index+1
+            min_range = search_index
         search_index = int((max_range-min_range)/2) + min_range
         i +=1
 
