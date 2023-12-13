@@ -29,29 +29,31 @@ def part_one(file):
         pattern = [[*x] for x in pattern]
         dprint(f'========> {index}')
         for line in pattern:
-            print(''.join(line))
-        print('')
+            dprint(''.join(line))
+        dprint('')
         for is_flipped, pat in enumerate([pattern, [[*x] for x in zip(*pattern)]]):
             for i in range(len(pat)-1):
                 line = ''.join(pat[i])
                 next = ''.join(pat[i+1])
                 if line != next:
                     continue
-                print(f'dupe lines! => {"rows" if not is_flipped else "cols"} {line} at {i}')
+                dprint(f'dupe lines! => {"rows" if not is_flipped else "cols"} {line} at {i}')
                 offset = 1
                 valid = True
                 while i-offset >= 0 and i+offset+1 < len(pat):
-                    print(f'comparing: {"".join(pat[i-offset])} != {"".join(pat[i+1+offset])}')
+                    dprint(f'comparing: {"".join(pat[i-offset])} != {"".join(pat[i+1+offset])}',1)
                     if ''.join(pat[i-offset]) != ''.join(pat[i+1+offset]):
                         valid = False
                         break
                     offset += 1
                 if valid:
-                    print(f'they were valid')
+                    dprint(f'they were valid',2)
                     if is_flipped: 
                         column_count += i+1
                     else:
                         row_count += i+1
+                else:
+                    dprint(f'NOT valid',2)
                 
     return column_count + row_count * 100
 
