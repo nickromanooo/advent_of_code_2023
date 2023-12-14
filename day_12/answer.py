@@ -73,21 +73,14 @@ def part_two(file):
     lines = [line.strip().split(' ') for line in f.readlines()]
 
     # https://github.com/jonathanpaulson/AdventOfCode/blob/master/2023/12.py
-    # this but i used functools.cache to not reinvent the wheel with caching
+    # https://github.com/fuglede/adventofcode/blob/master/2023/day12/solutions.py
     combinations_state = {}
     @functools.cache
     def get_combinations(record, gears, record_index, cur_size):
         ret = 0
         if record_index == len(record):
-            if len(gears) > 1:
-                return 0
-            elif len(gears) == 1:
-                if cur_size == gears[0]:
-                    return 1
-                return 0
-            elif cur_size == 0:
-                return 1
-            return 0 
+            return (not gears and not cur_size) or \
+                    (len(gears) == 1 and gears[0] == cur_size)
 
         dprint(f'record: {record[record_index:]} gears: {len(gears)}, ri: {record_index} size={cur_size}')
 
@@ -95,12 +88,9 @@ def part_two(file):
 
 
         if c in ['.','?']:
-            # if we have run out of gears
-            if (cur_size > 0 and (not len(gears) or cur_size != gears[0])):
-                pass
-            elif cur_size > 0 and cur_size == gears[0]:
+            if cur_size > 0 and gears and cur_size == gears[0]:
                 ret += get_combinations(record,gears[1:],record_index+1,0)
-            else:
+            elif cur_size == 0:
                 ret += get_combinations(record,gears,record_index+1,0)
         if c in ['#','?']:
             ret += get_combinations(record,gears,record_index+1,cur_size+1)
