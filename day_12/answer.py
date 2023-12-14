@@ -72,7 +72,8 @@ def part_two(file):
     f = open(file,'r')
     lines = [line.strip().split(' ') for line in f.readlines()]
 
-    
+    # https://github.com/jonathanpaulson/AdventOfCode/blob/master/2023/12.py
+    # this but i used functools.cache to not reinvent the wheel with caching
     combinations_state = {}
     @functools.cache
     def get_combinations(record, gears, record_index, cur_size):
