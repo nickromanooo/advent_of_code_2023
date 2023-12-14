@@ -4,6 +4,7 @@ import sys
 import itertools
 import re
 import math
+import functools
 debug = True if len(sys.argv) > 1 else False
 
 def dprint(input,padding=0):
@@ -71,9 +72,56 @@ def part_two(file):
     f = open(file,'r')
     lines = [line.strip().split(' ') for line in f.readlines()]
 
+    
+    combinations_state = {}
+    @functools.cache
+    def get_combinations(record, gears, record_index, cur_size):
+        ret = 0
+        if record_index == len(record):
+            if len(gears) > 1:
+                return 0
+            elif len(gears) == 1:
+                if cur_size == gears[0]:
+                    return 1
+                return 0
+            elif cur_size == 0:
+                return 1
+            return 0 
+
+        dprint(f'record: {record[record_index:]} gears: {len(gears)}, ri: {record_index} size={cur_size}')
+
+        c = record[record_index]
+
+
+        if c in ['.','?']:
+            # if we have run out of gears
+            if (cur_size > 0 and (not len(gears) or cur_size != gears[0])):
+                pass
+            elif cur_size > 0 and cur_size == gears[0]:
+                ret += get_combinations(record,gears[1:],record_index+1,0)
+            else:
+                ret += get_combinations(record,gears,record_index+1,0)
+        if c in ['#','?']:
+            ret += get_combinations(record,gears,record_index+1,cur_size+1)
+
+        return ret
+
+    result = 0
+    for line in lines:
+        record, gears = line[0],tuple([int(x) for x in line[1].split(',')])
+        record = '?'.join([record]*5)
+        gears = gears * 5
+        dprint(f'{record} => {gears}')
+        
+        res =  get_combinations(record,gears,0,0)
+        dprint(f'result = {res}')
+        result += res
+        dprint(combinations_state)
+
+    return result
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
 # print(f"Part one test: {part_one(dirname + '/test_input.txt')}")
 # print(f"Part one: {part_one(dirname + '/input.txt')}")
 print(f"Part two test: {part_two(dirname + '/test_input.txt')}")
-# print(f"Part two: {part_two(dirname + '/input.txt')}")
+print(f"Part two: {part_two(dirname + '/input.txt')}")
