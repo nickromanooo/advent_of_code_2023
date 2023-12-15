@@ -1,5 +1,12 @@
-# https://adventofcode.com/2023/day/7
 import os 
+import sys
+debug = True if len(sys.argv) > 1 else False
+
+def dprint(input,padding=0):
+    if not debug:
+        return
+    pad_str ="\t"*padding
+    print(pad_str+str(input))
 
 def part_one(file):
     f = open(file,'r')
