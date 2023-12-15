@@ -75,6 +75,7 @@ def part_two(file):
     # https://github.com/jonathanpaulson/AdventOfCode/blob/master/2023/12.py
     # https://github.com/fuglede/adventofcode/blob/master/2023/day12/solutions.py
     combinations_state = {}
+    
     @functools.cache
     def get_combinations(record, gears, record_index, cur_size):
         ret = 0
