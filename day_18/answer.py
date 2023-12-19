@@ -68,7 +68,7 @@ def part_two(file):
         distance = int(dec_distance,16)
         direction = [*enumerate(d_map.keys())][int(direction)][1]
 
-        print(direction,distance)
+        dprint(direction,distance)
         d_mod = d_map[direction]
         d_sum += (distance)
         cur = (cur[0]+(d_mod[0]*distance),cur[1]+(d_mod[1]*distance))
