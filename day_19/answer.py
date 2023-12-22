@@ -114,6 +114,7 @@ def part_two(file):
             dprint((letter,symbol,bound,next),1)
             if not part:
                 break
+            # TODO simplify these checks
             if letter != None and symbol == '<':
                 # the part that is less than the bound is good and should go to next
                 if part[letter][0] < bound-1:
@@ -161,7 +162,6 @@ def part_two(file):
                     else:
                         parts.append(new_part)
                 if part[letter][0] < bound:
-                    print('updating part')
                     new_part = []
                     for index in range(4):
                         if letter == index:
