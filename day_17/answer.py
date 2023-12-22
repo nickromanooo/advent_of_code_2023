@@ -220,7 +220,9 @@ def part_two_heap(file):
         new_squares = get_possible_moves(square)
         for ns in new_squares:
             if square[2] == end and square[1] >= 4:
-                print('winner found')
+                #in theory we should only ever have one here
+                #unless there are two identical heat_loss patterns
+                assert not winner
                 winner = square
             else:
                 heapq.heappush(squares,ns)
