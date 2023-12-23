@@ -34,13 +34,11 @@
 %lx -> ff, gp
 %rt -> hq
 %ph -> rb, hx
-&ls -> lg
 %nv -> xm
 %df -> nv
 %vk -> tk
 %cq -> gp, mq
 %hq -> bb
-&lg -> rx
 %zk -> ml, ps
 &ml -> kp, sr, tq, nb, tk, sh, vk
 %pf -> gp, nt
@@ -53,6 +51,8 @@ broadcaster -> sj, sr, tp, nk
 %qz -> ml, kh
 %tp -> gp, lx
 %tk -> sh
-&gp -> df, ls, mq, tp, nv
 %fk -> xh
 %ps -> qz, ml
+&gp -> df, ls, mq, tp, nv
+&ls -> lg
+&lg -> rx

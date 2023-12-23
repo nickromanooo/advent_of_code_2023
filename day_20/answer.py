@@ -1,5 +1,6 @@
 import os 
 import sys
+import math
 debug = True if len(sys.argv) > 1 else False
 
 def dprint(input,padding=0):
@@ -161,23 +162,30 @@ def part_two(file):
     # process in queue
     # QUEUE ITEM = from, to, type
     i = 0
-    low_pulse_count = 0
-    high_pulse_count = 0
-    while True:
+    rx_found = False
+    founds = {x:False for x,y in modules['gp']['state'].items()}
+    while not all(founds.values()):
         i += 1
         queue = [(None,'broadcaster', False)]
-        print(f'Processing button {i+1}:')
+        dprint(f'Processing button {i+1}:')
         while len(queue):
             source, dest_key, pulse = queue.pop(0)
-            if pulse:
-                high_pulse_count += 1
-            else:
-                low_pulse_count += 1
             dprint((source, pulse, dest_key),1)
 
             if dest_key not in modules:
                 # print(f"{dest_key} NOT IN MODULES ADDING EMPTY")
-                continue
+                if dest_key == 'rx' and pulse == False:
+                    print('DEST KEY FOUND!!!')
+                    print((source, pulse, dest_key))
+                    rx_found = True
+                    break
+                else:
+                    continue
+            if dest_key == 'gp' and pulse == True and founds[source] == False:
+                print(f'good bit found! {i} => {(source, pulse, dest_key)}')
+                founds[source] = i
+                print(f"{founds} ")
+
             if modules[dest_key]['type'] == 'broadcaster':
                 for goto in modules[dest_key]['gotos']:
                     queue.append((dest_key,goto,pulse))
@@ -198,19 +206,18 @@ def part_two(file):
                     next_pulse = False
                 for goto in modules[dest_key]['gotos']:
                     queue.append((dest_key,goto,next_pulse))
-        dprint(f"Current results {i+1}")
-        for key,value in modules.items():
-            dprint(f"{key} {value['type']} => {value['state']}")
-
-        if 'rx' in [x[1] for x in queue]:
-            break
+        # dprint(f"Current results {i+1}")
+        # for key,value in modules.items():
+        #     dprint(f"{key} {value['type']} => {value['state']}")
 
     print(f' found after {i} presses')
+    intervals = []
+    for item in founds.values():
+        test3 = item[3] - item[4]
+        intervals.append(test3)
 
 
-    dprint(f"results is:")
-    dprint(f"high {high_pulse_count} low {low_pulse_count}",1)
-    return high_pulse_count * low_pulse_count
+    return math.lcm(*intervals) 
 
 
 dirname, _ = os.path.split(os.path.abspath(__file__))
