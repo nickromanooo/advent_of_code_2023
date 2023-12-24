@@ -163,8 +163,8 @@ def part_two(file):
     # QUEUE ITEM = from, to, type
     i = 0
     rx_found = False
-    founds = {x:False for x,y in modules['gp']['state'].items()}
-    while not all(founds.values()):
+    founds = modules['gp']['state'].copy()
+    while not rx_found:
         i += 1
         queue = [(None,'broadcaster', False)]
         dprint(f'Processing button {i+1}:')
@@ -181,10 +181,15 @@ def part_two(file):
                     break
                 else:
                     continue
-            if dest_key == 'gp' and pulse == True and founds[source] == False:
+
+            if dest_key == 'gp' and pulse == True and source in founds.keys() and founds[source] == False and not len([x[1] for x in queue if x[1] == source]):
                 print(f'good bit found! {i} => {(source, pulse, dest_key)}')
                 founds[source] = i
-                print(f"{founds} ")
+                dprint(f"{founds} ")
+            if all(founds.values()):
+                dprint(founds)
+                rx_found = True
+                break
 
             if modules[dest_key]['type'] == 'broadcaster':
                 for goto in modules[dest_key]['gotos']:
@@ -210,12 +215,13 @@ def part_two(file):
         # for key,value in modules.items():
         #     dprint(f"{key} {value['type']} => {value['state']}")
 
-    print(f' found after {i} presses')
+    print(f' found after {i} presses {founds}')
+    print(modules['gp']['state'].keys())
     intervals = []
     for item in founds.values():
-        test3 = item[3] - item[4]
+        test3 =  item
         intervals.append(test3)
-
+    print(intervals)
 
     return math.lcm(*intervals) 
 
